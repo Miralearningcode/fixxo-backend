@@ -22,5 +22,7 @@ const products = [
     {articleNumber:"a62c0e89-f782-49dc-a07a-62bd2af86190", name: "Striped pink pants", description: "", category: "Pants", price: 95, rating: 3, imageName: "https://win22imgstorage.blob.core.windows.net/images/striped-pants.png"},
     {articleNumber:"ce9d7055-2854-4d61-ac33-f72b15418b20", name: "White sweater", description: "", category: "Sweaters", price: 58, rating: 5, imageName: "https://win22imgstorage.blob.core.windows.net/images/white-sweater.png"},
     {articleNumber:"15674050-a297-4ce4-b83b-b2c221702a85", name: "Winter boots", description: "", category: "Shoes", price: 75, rating: 5, imageName: "https://win22imgstorage.blob.core.windows.net/images/winter-boots.png"},
+    {articleNumber:"15674050-a298-4ce4-b83b-b2c221702a85", name: "Winter boots", description: "", category: "Shoes", price: 75, rating: 5, imageName: "https://win22imgstorage.blob.core.windows.net/images/winter-boots.png"}
+    
 ]
 module.exports = products
