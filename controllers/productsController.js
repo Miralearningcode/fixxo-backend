@@ -1,6 +1,6 @@
-const express = require('express')
-const controller = express.Router()
-let products = require('../data/simulated_database')
+let products = require('../data/simulated_database') //*
+const express = require('express')  //*
+const controller = express.Router() //*
 
 
 //middleware
@@ -25,8 +25,8 @@ controller.route('/')
     products.push(product)
     httpResponse.status(201).json(product)
 })
-.get((httpRequest, httpResponse) => {
-    httpResponse.status(200).json(products)
+.get((httpRequest, httpResponse) => { //*
+    httpResponse.status(200).json(products) //*
 })
 
 
@@ -69,4 +69,4 @@ controller.route("/:id")
 
 
 
-module.exports = controller
+module.exports = controller //*
