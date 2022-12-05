@@ -9,6 +9,17 @@ controller.param("id", (httpRequest, httpResponse, next, id) => {  //Hans har (r
     next()  //Gör att den går vidare från middleware
 })
 
+controller.param("articleNumber", (httpRequest, httpResponse, next, articleNumber) => {   //*
+    httpRequest.product = products.find(x => x.articleNumber == articleNumber) //*
+    next()        //*
+}) //*
+
+controller.param("tag", (httpRequest, httpResponse, next, tag) => {   //*
+    httpRequest.products = products.filter(x => x.tag == tag) //*
+    next()        //*
+}) //*
+
+
 //http://localhost:5000/api/products  Lägga till produkt
 controller.route('/')
 .post((httpRequest, httpResponse) => {
@@ -31,7 +42,7 @@ controller.route('/')
 
 
 //http://localhost:5000/api/products/1  Hämta produkt
-controller.route("/:id")
+controller.route("/details/:id")  //innan föreläsning 4: controller.route("/:id")
 .get((httpRequest, httpResponse) => {
     if (httpRequest.product != undefined)
         httpResponse.status(200).json(httpRequest.product)
@@ -65,8 +76,31 @@ controller.route("/:id")
         httpResponse.status(404).json()
 })
 
+controller.route('/product/:articleNumber') //*
+.get((httpRequest, httpResponse) => { //*
+    if(httpRequest.product != undefined)
+        httpResponse.status(200).json(httpRequest.product) //*
+    else
+        httpResponse.status(404).json()  //*
+})  //*
 
+controller.route('/:tag') //*
+.get((httpRequest, httpResponse) => { //*
+    if(httpRequest.products != undefined)
+        httpResponse.status(200).json(httpRequest.products) //*
+    else
+        httpResponse.status(404).json()  //*
+})  //*
 
+controller.route('/:tag/:take') //*
+.get((httpRequest, httpResponse) => { //*
+    let list = []
+
+    for (let i = 0; i< Number(httpRequest.params.take); i++)
+        list.push(httpRequest.products[i])
+    
+    httpResponse.status(200).json(list)
+})  //*
 
 
 module.exports = controller //*
