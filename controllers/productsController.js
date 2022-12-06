@@ -2,6 +2,14 @@ let products = require('../data/simulated_database') //*
 const express = require('express')  //*
 const controller = express.Router() //*
 
+const productSchema = require('../schemas/productSchema')  //Motsvarar den vi tidigare hade som databas innan
+
+// unsecured routes
+
+
+
+
+
 
 //middleware
 controller.param("id", (httpRequest, httpResponse, next, id) => {  //Hans har (req, res, next, id) 
@@ -36,9 +44,16 @@ controller.route('/')
     products.push(product)
     httpResponse.status(201).json(product)
 })
-.get((httpRequest, httpResponse) => { //*
-    httpResponse.status(200).json(products) //*
+.get(async (httpRequest, httpResponse) => { //Hämtar ALLA produkter
+    try {
+        httpResponse.status(200).json(await productSchema.find())
+   } catch {
+        httpResponse.status(400).json()
+   }
 })
+// .get((httpRequest, httpResponse) => { //*
+//     httpResponse.status(200).json(products) //*
+// })
 
 
 //http://localhost:5000/api/products/1  Hämta produkt
@@ -101,6 +116,7 @@ controller.route('/:tag/:take') //*
     
     httpResponse.status(200).json(list)
 })  //*
+
 
 
 module.exports = controller //*
