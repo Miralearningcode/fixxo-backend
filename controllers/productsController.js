@@ -4,8 +4,7 @@ const controller = express.Router()
 const productSchema = require('../schemas/productSchema') 
 
 
-// unsecured routes
-
+// Unsecured routes
 
 controller.route('/')
 .get(async (httpRequest, httpResponse) => { 
@@ -29,7 +28,7 @@ controller.route('/')
         httpResponse.status(400).json()
 })  
 
-//Hämta ut en specifik produkt
+// Get a specific product
 controller.route('/details/product/:articleNumber') //* Hans har '/product/details/:articleNumber'
 .get(async (httpRequest, httpResponse) => { 
     const product = await productSchema.findById(httpRequest.params.articleNumber)
@@ -92,9 +91,10 @@ controller.route('/:tag/:take')
         httpResponse.status(400).json()
 })  
 
-// secured routes
 
-//Add a product
+// Secured routes
+
+// Add a product
 controller.route('/')  
 .post(async (httpRequest, httpResponse) => {
     const { name, description, price, category, tag, imageName, rating} = httpRequest.body
@@ -122,7 +122,7 @@ controller.route('/')
     }
 })
 
-//Delete a product
+// Delete a product
 controller.route('/:articleNumber')  
 .delete(async (httpRequest, httpResponse) => {
     if(!httpRequest.params.articleNumber)
@@ -138,13 +138,95 @@ controller.route('/:articleNumber')
     }
 })
 
-//Update a product
-controller.route('/:articleNumber')  
+// Update a product
+controller.route('/details/product/:articleNumber')   //eller '/details/product/:articleNumber'
 .put(async (httpRequest, httpResponse) => {
+    const product = await productSchema.findById(httpRequest.params.articleNumber)  //Find the product
+    const { name, description, price, category, tag, imageName, rating} = httpRequest.body
     
-    // productSchema.updateOne
-})
+    const update = await productSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body)
+    if (update) {
+       httpResponse.status(201).json({text: `Product with article number: ${product._id} was successfully updated`})
+    } else if (!product) {
+        httpResponse.status(404).json({text: 'Could not find a product with that article number'}) //If it does'nt exist, return 404
+    } else {
+         httpResponse.status(400).json({text: 'Something went wrong, could not update the product'})
+    }
+        
+}) 
+
+
+// //Update a product
+// controller.route('/:articleNumber')   //eller '/details/product/:articleNumber'
+// .put(async (httpRequest, httpResponse) => {
+//     const { name, description, price, category, tag, imageName, rating} = httpRequest.body
+//     const product = await productSchema.findById(httpRequest.params.articleNumber)  //Find the product
+    
+//     if (!product) {
+//         httpResponse.status(404).json()
+//         console.log("error")
+//     } else {
+//         httpResponse.status(200).json
+//     }
+//     const updateProduct = await productSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body)
+// }) 
+        
+        
+        // const exists = await productSchema.findById({})
+        // if (exists) {
+        //     const updateProduct = await productSchema.updateOne({})
+        //     if (product)
+        //         httpResponse.status(201).json({text: `Product with article number: ${product._id} was successfully updated`})
+        //     else
+        //         httpResponse.status(400).json({text: 'Something went wrong, could not update the product'})
+        // }
+
+        
+    
 
 
 
-module.exports = controller //*
+//Othervise validate the product
+//If invalid, return 400 - badrequest
+
+//Update product
+//Return the updated product
+
+
+    // productSchema.findByIdAndUpdate
+ 
+
+    // const product = await productSchema.findById(httpRequest.params.articleNumber) 
+    // if(product) {
+    //     httpResponse.status(200).json({
+    //         articleNumber: product._id,
+    //         name: product.name,
+    //         description: product.description,
+    //         price: product.price,
+    //         category: product.category,
+    //         tag: product.tag,
+    //         imageName: product.imageName,
+    //         rating: product.rating
+    //     })
+        
+    // } else
+    //     httpResponse.status(404).json() // 
+    
+
+    
+
+    // productSchema.updateOne({
+    //     name,
+    //     description,
+    //     price,
+    //     category,
+    //     tag,
+    //     imageName, 
+    //     rating
+    // })
+
+
+
+
+
+module.exports = controller 
