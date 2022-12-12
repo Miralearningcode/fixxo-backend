@@ -29,7 +29,7 @@ controller.route('/')
 })  
 
 // Get a specific product
-controller.route('/details/product/:articleNumber') //* Hans har '/product/details/:articleNumber'
+controller.route('/details/product/:articleNumber') 
 .get(async (httpRequest, httpResponse) => { 
     const product = await productSchema.findById(httpRequest.params.articleNumber)
     if(product) {
@@ -116,7 +116,7 @@ controller.route('/')
             rating
         })
         if (product)
-            httpResponse.status(201).json({text: `Product with article number: ${product._id} was successfully added`})
+            httpResponse.status(201).json({text: `Product: ${product.name}, with article number: ${product._id}, was successfully added`})
         else
             httpResponse.status(400).json({text: 'Something went wrong, could not create a new product'})
     }
@@ -128,7 +128,7 @@ controller.route('/:articleNumber')
     if(!httpRequest.params.articleNumber)
         httpResponse.status(400).json('Missing articlenumber')
     else {
-        const product =  await productSchema.findById(httpRequest.params.articleNumber)  //Hans har item
+        const product =  await productSchema.findById(httpRequest.params.articleNumber)  
         if (product) {
             await productSchema.remove(product)
             httpResponse.status(200).json({text: `Product with article number: ${httpRequest.params.articleNumber} was successfully deleted`})
@@ -139,7 +139,7 @@ controller.route('/:articleNumber')
 })
 
 // Update a product
-controller.route('/details/product/:articleNumber')   //eller '/details/product/:articleNumber'
+controller.route('/details/product/:articleNumber')   
 .put(async (httpRequest, httpResponse) => {
     const product = await productSchema.findById(httpRequest.params.articleNumber)  //Find the product
     const { name, description, price, category, tag, imageName, rating} = httpRequest.body
@@ -148,83 +148,12 @@ controller.route('/details/product/:articleNumber')   //eller '/details/product/
     if (update) {
        httpResponse.status(201).json({text: `Product with article number: ${product._id} was successfully updated`})
     } else if (!product) {
-        httpResponse.status(404).json({text: 'Could not find a product with that article number'}) //If it does'nt exist, return 404
+        httpResponse.status(404).json({text: 'Could not find a product with that article number'}) 
     } else {
          httpResponse.status(400).json({text: 'Something went wrong, could not update the product'})
     }
         
 }) 
-
-
-// //Update a product
-// controller.route('/:articleNumber')   //eller '/details/product/:articleNumber'
-// .put(async (httpRequest, httpResponse) => {
-//     const { name, description, price, category, tag, imageName, rating} = httpRequest.body
-//     const product = await productSchema.findById(httpRequest.params.articleNumber)  //Find the product
-    
-//     if (!product) {
-//         httpResponse.status(404).json()
-//         console.log("error")
-//     } else {
-//         httpResponse.status(200).json
-//     }
-//     const updateProduct = await productSchema.findByIdAndUpdate(httpRequest.params.articleNumber, httpRequest.body)
-// }) 
-        
-        
-        // const exists = await productSchema.findById({})
-        // if (exists) {
-        //     const updateProduct = await productSchema.updateOne({})
-        //     if (product)
-        //         httpResponse.status(201).json({text: `Product with article number: ${product._id} was successfully updated`})
-        //     else
-        //         httpResponse.status(400).json({text: 'Something went wrong, could not update the product'})
-        // }
-
-        
-    
-
-
-
-//Othervise validate the product
-//If invalid, return 400 - badrequest
-
-//Update product
-//Return the updated product
-
-
-    // productSchema.findByIdAndUpdate
- 
-
-    // const product = await productSchema.findById(httpRequest.params.articleNumber) 
-    // if(product) {
-    //     httpResponse.status(200).json({
-    //         articleNumber: product._id,
-    //         name: product.name,
-    //         description: product.description,
-    //         price: product.price,
-    //         category: product.category,
-    //         tag: product.tag,
-    //         imageName: product.imageName,
-    //         rating: product.rating
-    //     })
-        
-    // } else
-    //     httpResponse.status(404).json() // 
-    
-
-    
-
-    // productSchema.updateOne({
-    //     name,
-    //     description,
-    //     price,
-    //     category,
-    //     tag,
-    //     imageName, 
-    //     rating
-    // })
-
 
 
 
